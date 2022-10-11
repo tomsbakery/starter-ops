@@ -1,8 +1,7 @@
 from base64 import b64encode
 from json import dumps
 from os import environ
-from flask import Flask
-from flask import request
+from flask import Flask, jsonify, make_response, request
 import requests
 
 GH_ORG_NAME = environ["GH_ORG_NAME"]
@@ -98,6 +97,8 @@ def oven():
                 payload=dumps(PROTECTIONS_PAYLOAD_DICT))
         # log an issue to the repo describing actions taken
         gh_request("POST", f"/repos/{owner}/{repo}/issues", payload=dumps(ISSUE_PAYLOAD_DICT))
+
+    return make_response(jsonify({"code": "success", "status": 201}), 201)
 
 if __name__ == "__main__":
     app.run(use_reloader=True)
