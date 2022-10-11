@@ -29,6 +29,33 @@ ISSUE_PAYLOAD_DICT = {
     +"- Automatic dismissal of existing reviews following new PR commit(s)\n"
 }
 
+def request_debug(res):
+    """assemble and return reasonable information about a request/response"""
+    return {
+        "statusCode": res.status_code,
+        "body": {
+            "request": {
+                "url": res.request.url,
+                # i would like for this to be sophiscated enough to produce a readable
+                # debug payload, but alas the approach has issues of its own
+                # "headers": dict(res.request.headers),
+                # "body": loads(res.request.body.replace("\\", ""))
+                "headers": str(res.request.headers),
+                "body": str(res.request.body)
+
+            },
+            "response": {
+                "statusCode": res.status_code,
+                "url": res.url,
+                "reason": res.reason,
+                # "headers": dict(res.headers),
+                # "body": loads(res.text.replace("\\", ""))
+                "headers": str(res.headers),
+                "body": str(res.text)
+            }
+        }
+    }
+
 def gh_request(method, resource, payload=None, addtl_headers=None):
     """a function tailored, somewhat, to the GitHub REST API"""
     gh_rest_base_url = "https://api.github.com"
@@ -47,6 +74,7 @@ def gh_request(method, resource, payload=None, addtl_headers=None):
                 res = requests.put(full_url, headers=full_headers, data=payload,
                         auth=(GH_USER_NAME, GH_ACCESS_TOKEN))
         res.raise_for_status()
+        print(request_debug(res))
     except requests.exceptions.RequestException:
         # do some more sophisticated error handling
         pass
