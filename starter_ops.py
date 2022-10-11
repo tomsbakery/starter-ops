@@ -135,3 +135,9 @@ def lambda_handler(event, context):
             return request_debug(response)
 
     return { "statusCode": 200, "body": "Everything is probably fine" }
+
+def main():
+    return { "statusCode": 200, "body": "Everything is probably fine" }
+
+if __name__ == "__main__":
+    main()
