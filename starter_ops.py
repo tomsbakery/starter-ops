@@ -139,5 +139,7 @@ def lambda_handler(event, context):
 def main():
     return { "statusCode": 200, "body": "Everything is probably fine" }
 
-if __name__ == "__main__":
-    main()
+async def app(scope, receive, send):
+    headers = [(b"content-type", b"text/html")]
+    await send({"type": "http.response.start", "status": 200, "headers": headers})
+    await send({"type": "http.response.body", "body": scope["raw_path"]})
