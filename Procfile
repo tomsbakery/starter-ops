@@ -1,1 +1,1 @@
-web: uvicorn --host 0.0.0.0 starter_ops:app
+web: uvicorn --host 0.0.0.0 minimal_case:main
