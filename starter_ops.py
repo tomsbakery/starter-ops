@@ -74,10 +74,10 @@ def gh_request(method, resource, payload=None, addtl_headers=None):
                 res = requests.put(full_url, headers=full_headers, data=payload,
                         auth=(GH_USER_NAME, GH_ACCESS_TOKEN))
         res.raise_for_status()
-        print(request_debug(res))
     except requests.exceptions.RequestException:
         # do some more sophisticated error handling
-        pass
+        # pass
+        print(request_debug(res))
     return res
 
 app = Flask(__name__)
