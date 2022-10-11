@@ -1,1 +1,1 @@
-web: uvicorn --host 0.0.0.0 --port $PORT --factory --lifespan on minimal_case:main
+web: hypercorn --bind 0.0.0.0:$PORT minimal_case:main
