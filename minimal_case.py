@@ -1,11 +1,10 @@
 # from json import dumps
 from pprint import pprint
 
-def main(*args, **kwargs):
+def main(*args):
     print(type(args))
-    print(type(kwargs))
+    print(len(args))
     pprint(args)
-    pprint(kwargs)
     # kwargs["positional"] = args
     # return dumps(kwargs)
     # return { "statusCode": 200, "body": "Status OK" }
