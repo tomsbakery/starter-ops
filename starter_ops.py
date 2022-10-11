@@ -22,9 +22,10 @@ ISSUE_PAYLOAD_DICT = {
     "body": \
     "Heyo @nrgetik, the following protections were just enabled on the default branch of this "
     +"repository:\n\n"
-    +"- No merges of PRs will be allowed prior to at least 2 code reviews\n"
-    +"  - No teams or users are exempt from this; it's enforced even for admins\n"
-    +"- Automatic dismissal of existing reviews following new PR commit(s)\n"
+    +"- Pull requests will be required before merging\n"
+    +"- No merges of pull requests allowed prior to at least 2 code reviews by code owners\n"
+    +"- Automatic dismissal of existing reviews following new pull request commit(s)\n"
+    +"- No teams or users are exempt; these rules apply even for admins"
 }
 
 def debug_call(res):
