@@ -1,9 +1,9 @@
-from json import dumps
+# from json import dumps
 from pprint import pprint
 
 def main(*args, **kwargs):
-    print(type(*args))
-    print(type(**kwargs))
+    print(type(args))
+    print(type(kwargs))
     pprint(args)
     pprint(kwargs)
     # kwargs["positional"] = args
