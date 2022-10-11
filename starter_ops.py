@@ -34,7 +34,7 @@ def index():
 
 @app.route("/test", methods=["GET"])
 def test():
-    return gh_request("GET", f"/orgs/{GH_ORG_NAME}/repos")
+    return gh_request("GET", f"/orgs/{GH_ORG_NAME}/repos").json()
 
 if __name__ == "__main__":
     app.run(use_reloader=True)
