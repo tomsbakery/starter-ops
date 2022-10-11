@@ -1,1 +1,1 @@
-web: uvicorn --host 0.0.0.0 --port 80 --factory --lifespan on minimal_case:main
+web: uvicorn --host 0.0.0.0 --port $PORT --factory --lifespan on minimal_case:main
