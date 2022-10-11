@@ -70,6 +70,7 @@ def oven():
     and takes the necessary actions to issue our protections using the
     GitHub REST API
     """
+    return request.json
 
 if __name__ == "__main__":
     app.run(use_reloader=True)
