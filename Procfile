@@ -1,1 +1,1 @@
-web: hypercorn --bind 0.0.0.0:$PORT minimal_case
+web: hypercorn --bind 0.0.0.0:$PORT starter_ops
