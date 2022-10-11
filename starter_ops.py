@@ -31,8 +31,8 @@ ISSUE_PAYLOAD_DICT = {
 
 def request_debug(res):
     """assemble and return reasonable information about a request/response"""
-    return {
-        "status_code": res.status_code,
+    return jsonify({
+        "statusCode": res.status_code,
         "body": {
             "request": {
                 "url": res.request.url,
@@ -48,7 +48,7 @@ def request_debug(res):
                 "body": res.text
             }
         }
-    }
+    })
 
 def gh_request(method, resource, payload=None, addtl_headers=None):
     """a function tailored, somewhat, to the GitHub REST API"""
