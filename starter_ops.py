@@ -11,11 +11,9 @@ PROTECTIONS_PAYLOAD_DICT = {
     "required_status_checks": None,
     "enforce_admins": True,
     "required_pull_request_reviews": {
-        # "dismissal_restrictions": {},
         "dismiss_stale_reviews": True,
         "require_code_owner_reviews": True,
         "required_approving_review_count": 2,
-        # "bypass_pull_request_allowances": []
     },
     "restrictions": None
 }
@@ -29,9 +27,10 @@ ISSUE_PAYLOAD_DICT = {
     +"- Automatic dismissal of existing reviews following new PR commit(s)\n"
 }
 
-def request_debug(res):
+def debug_call(res):
     """assemble and return reasonable information about a request/response"""
-    return jsonify({
+    # TODO: make this truly serializable at some point (req/res headers/body)
+    return {
         "statusCode": res.status_code,
         "body": {
             "request": {
@@ -48,7 +47,7 @@ def request_debug(res):
                 "body": res.text
             }
         }
-    })
+    }
 
 def gh_request(method, resource, payload=None, addtl_headers=None):
     """a function tailored, somewhat, to the GitHub REST API"""
@@ -69,7 +68,7 @@ def gh_request(method, resource, payload=None, addtl_headers=None):
                         auth=(GH_USER_NAME, GH_ACCESS_TOKEN))
         res.raise_for_status()
     except requests.exceptions.RequestException:
-        print(request_debug(res))
+        print(debug_call(res))
         # do some more sophisticated error handling
     return res
 
@@ -107,7 +106,7 @@ def oven():
             # if we already have a default/main branch, protect it
             branch = branches[0]["name"]
             gh_request("PUT", f"/repos/{owner}/{repo}/branches/{branch}/protection",
-                    payload=dumps(PROTECTIONS_PAYLOAD_DICT))
+                payload=dumps(PROTECTIONS_PAYLOAD_DICT))
         else:
             # otherwise, commit a README.md to create a default branch, then protect it
             contents = b64encode(f"# {repo}".encode("utf-8")).decode("utf-8").strip("\n")
