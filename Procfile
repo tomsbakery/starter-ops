@@ -1,1 +1,1 @@
-web: uvicorn --host 0.0.0.0 --port 8000 starter_ops:app
+web: uvicorn --host 0.0.0.0 starter_ops:app
