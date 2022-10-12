@@ -289,4 +289,5 @@ This application could benefit, greatly, from a variety of improvements. Some th
 - More and better data/input validation
 - Securing endpoints with, at minimum, access tokens
 - More and better error/exception handling
+- Reasonable rate limiting
 - Load testing and performance enhancements
