@@ -1,6 +1,7 @@
 from base64 import b64encode
 from json import dumps
 from os import environ
+from asgiref.wsgi import WsgiToAsgi
 from flask import Flask, jsonify, make_response, request
 from ghrest import github as gh
 
@@ -98,5 +99,7 @@ def toaster(owner, repo):
     """
     return push_protections(owner, repo)
 
-if __name__ == "__main__":
-    app.run(use_reloader=True)
+asgi_app = WsgiToAsgi(app)
+
+# if __name__ == "__main__":
+#     app.run(use_reloader=True)
