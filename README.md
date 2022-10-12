@@ -24,10 +24,10 @@ starter-ops is a small, [Flask](#)-based Python microservices application which 
 In this example, the application is deployed to and hosted from the [Heroku](#) platform and is triggered by [GitHub organization webhooks](#). The logical flow of the design of this solution is roughly illustrated by the following diagram:
 
 ```mermaid
-graph TD
-A{github org} -- new repository --> B((github webhook))
+graph LR
+A{github org} -- new repo --> B[github webhook]
 B --> C(starter-ops)
-C -- push branch protection rules --> A
+C -- branch protection rules --> D((repo))
 ```
 
 ## General Requirements
