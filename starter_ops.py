@@ -83,5 +83,9 @@ def oven():
         return make_response(jsonify({"code": "failure", "status": 500}), 500)
     return make_response(jsonify({"code": "success", "status": 201}), 201)
 
+@app.route("/toaster/<string:owner>/<string:repo>", methods=["GET"])
+def toaster(owner, repo):
+    return gh.get(f"/orgs/{owner}/{repo}", GH_AUTH).json()
+
 if __name__ == "__main__":
     app.run(use_reloader=True)
