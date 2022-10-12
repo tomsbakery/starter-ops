@@ -16,14 +16,14 @@ __Note:__ _This repository contains example code and instructions meant to demon
 
 ## Overview
 
-starter-ops is a small, [Flask](#)-based Python microservices application which utilizes the [GitHub Rest API](#) in order to apply certain default branch protection rules to newly-created repositories within a specified GitHub organization. These protection rules can be summarized as follows:
+starter-ops is a small, [Flask](https://flask.palletsprojects.com/en/2.2.x/)-based Python microservices application which utilizes the [GitHub Rest API](https://docs.github.com/en/rest) in order to apply certain default branch protection rules to newly-created repositories within a specified GitHub organization. These protection rules can be summarized as follows:
 
 - Require a pull request before merging
 - No merges of pull requests allowed prior to at least 2 code reviews by code owners
 - Automatic dismissal of existing reviews following new pull request commit(s)
 - No teams or users are exempt; rules are enforced even for admins
 
-In this example, the application is deployed to and hosted from the [Heroku](#) platform and is triggered by [GitHub organization webhooks](#). The logical flow of the design of this solution is roughly illustrated by the following diagram:
+In this example, the application is deployed to and hosted from the [Heroku](https://www.heroku.com) platform and is triggered by [GitHub organization webhooks](https://docs.github.com/en/rest/orgs/webhooks). The logical flow of the design of this solution is roughly illustrated by the following diagram:
 
 ```mermaid
 graph LR
