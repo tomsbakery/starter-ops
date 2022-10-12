@@ -2,11 +2,12 @@ from base64 import b64encode
 from json import dumps
 from os import environ
 from flask import Flask, jsonify, make_response, request
-import requests
+from ghrest import github as gh
 
 GH_ORG_NAME = environ["GH_ORG_NAME"]
 GH_USER_NAME = environ["GH_USER_NAME"]
 GH_ACCESS_TOKEN = environ["GH_ACCESS_TOKEN"]
+GH_AUTH = (GH_USER_NAME, GH_ACCESS_TOKEN)
 PROTECTIONS_PAYLOAD_DICT = {
     "required_status_checks": None,
     "enforce_admins": True,
@@ -28,51 +29,6 @@ ISSUE_PAYLOAD_DICT = {
     +"- No teams or users are exempt; these rules apply even for admins"
 }
 
-def debug_call(res):
-    """assemble and return reasonable information about a request/response"""
-    # TODO: make this truly serializable at some point (req/res headers/body)
-    return {
-        "statusCode": res.status_code,
-        "body": {
-            "request": {
-                "url": res.request.url,
-                "headers": res.request.headers,
-                "body": res.request.body
-
-            },
-            "response": {
-                "statusCode": res.status_code,
-                "url": res.url,
-                "reason": res.reason,
-                "headers": res.headers,
-                "body": res.text
-            }
-        }
-    }
-
-def gh_request(method, resource, payload=None, addtl_headers=None):
-    """a function tailored, somewhat, to the GitHub REST API"""
-    gh_rest_base_url = "https://api.github.com"
-    full_url = f"{gh_rest_base_url}{resource}"
-    gh_base_headers = {"Accept": "application/vnd.github.v3+json"}
-    full_headers = gh_base_headers|addtl_headers if addtl_headers else gh_base_headers
-    try:
-        match method:
-            case "GET":
-                res = requests.get(full_url, headers=full_headers,
-                        auth=(GH_USER_NAME, GH_ACCESS_TOKEN), timeout=10)
-            case "POST":
-                res = requests.post(full_url, headers=full_headers, data=payload,
-                        auth=(GH_USER_NAME, GH_ACCESS_TOKEN), timeout=10)
-            case "PUT":
-                res = requests.put(full_url, headers=full_headers, data=payload,
-                        auth=(GH_USER_NAME, GH_ACCESS_TOKEN), timeout=10)
-        res.raise_for_status()
-    except requests.exceptions.RequestException:
-        print(debug_call(res))
-        # do some more sophisticated error handling
-    return res
-
 app = Flask(__name__)
 
 @app.route("/", methods=["GET"])
@@ -87,7 +43,7 @@ def test():
     org to test if the REST API interface to GitHub is generally working
     """
     repos = []
-    for repo in gh_request("GET", f"/orgs/{GH_ORG_NAME}/repos").json():
+    for repo in gh.get(f"/orgs/{GH_ORG_NAME}/repos", GH_AUTH).json():
         repos.append(repo["full_name"])
     return make_response(jsonify(repos), 200)
 
@@ -104,24 +60,27 @@ def oven():
     if event_dict["action"] == "created":
         owner = event_dict["repository"]["owner"]["login"]
         repo = event_dict["repository"]["name"]
+        res = []
 
-        branches = gh_request("GET", f"/repos/{owner}/{repo}/branches").json()
+        branches = gh.get(f"/repos/{owner}/{repo}/branches", GH_AUTH).json()
         if len(branches) > 0:
             # if we already have a default/main branch, protect it
             branch = branches[0]["name"]
-            gh_request("PUT", f"/repos/{owner}/{repo}/branches/{branch}/protection",
-                payload=dumps(PROTECTIONS_PAYLOAD_DICT))
+            res.append(gh.put(f"/repos/{owner}/{repo}/branches/{branch}/protection",
+                        dumps(PROTECTIONS_PAYLOAD_DICT), GH_AUTH))
         else:
             # otherwise, commit a README.md to create a default branch, then protect it
             contents = b64encode(f"# {repo}".encode("utf-8")).decode("utf-8").strip("\n")
             commit_dict = {"branch": "main", "message": "Initial commit", "content": contents}
-            gh_request("PUT", f"/repos/{owner}/{repo}/contents/README.md",
-                payload=dumps(commit_dict))
-            gh_request("PUT", f"/repos/{owner}/{repo}/branches/main/protection",
-                payload=dumps(PROTECTIONS_PAYLOAD_DICT))
+            res.append(gh.put(f"/repos/{owner}/{repo}/contents/README.md", dumps(commit_dict),
+                        GH_AUTH))
+            res.append(gh.put(f"/repos/{owner}/{repo}/branches/main/protection",
+                        dumps(PROTECTIONS_PAYLOAD_DICT), GH_AUTH))
         # log an issue to the repo describing actions taken
-        gh_request("POST", f"/repos/{owner}/{repo}/issues", payload=dumps(ISSUE_PAYLOAD_DICT))
+        res.append(gh.post(f"/repos/{owner}/{repo}/issues", dumps(ISSUE_PAYLOAD_DICT), GH_AUTH))
 
+    if False in res:
+        return make_response(jsonify({"code": "failure", "status": 500}), 500)
     return make_response(jsonify({"code": "success", "status": 201}), 201)
 
 if __name__ == "__main__":
