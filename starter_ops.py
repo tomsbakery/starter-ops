@@ -60,13 +60,13 @@ def gh_request(method, resource, payload=None, addtl_headers=None):
         match method:
             case "GET":
                 res = requests.get(full_url, headers=full_headers,
-                        auth=(GH_USER_NAME, GH_ACCESS_TOKEN))
+                        auth=(GH_USER_NAME, GH_ACCESS_TOKEN), timeout=10)
             case "POST":
                 res = requests.post(full_url, headers=full_headers, data=payload,
-                        auth=(GH_USER_NAME, GH_ACCESS_TOKEN))
+                        auth=(GH_USER_NAME, GH_ACCESS_TOKEN), timeout=10)
             case "PUT":
                 res = requests.put(full_url, headers=full_headers, data=payload,
-                        auth=(GH_USER_NAME, GH_ACCESS_TOKEN))
+                        auth=(GH_USER_NAME, GH_ACCESS_TOKEN), timeout=10)
         res.raise_for_status()
     except requests.exceptions.RequestException:
         print(debug_call(res))
