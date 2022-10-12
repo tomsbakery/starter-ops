@@ -8,7 +8,7 @@ __Note:__ _This repository contains example code and instructions meant to demon
 - [Configure and Deploy](#configure-and-deploy)
 	- [Testing](#testing)
 - [Usage](#usage)
-	- [Existing repositories](#existing-repositories)
+	- [Existing Repositories](#existing-repositories)
 - [Reference](#reference)
 	- [Source Code](#source-code)
 	- [Further Reading](#further-reading)
