@@ -85,7 +85,7 @@ def oven():
 
 @app.route("/toaster/<string:owner>/<string:repo>", methods=["GET"])
 def toaster(owner, repo):
-    return gh.get(f"/orgs/{owner}/{repo}", GH_AUTH).json()
+    return gh.get(f"/{owner}/{repo}", GH_AUTH).json()
 
 if __name__ == "__main__":
     app.run(use_reloader=True)
