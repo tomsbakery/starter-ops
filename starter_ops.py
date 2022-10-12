@@ -86,11 +86,11 @@ def test():
     returns a JSON payload containing the list of repositories in our
     org to test if the REST API interface to GitHub is generally working
     """
-    repos = []
-    for repo in gh_request("GET", f"/orgs/{GH_ORG_NAME}/repos").json():
-        repos.append(f"{repo['owner']}/{repo['name']}")
-    return repos
-    # return gh_request("GET", f"/orgs/{GH_ORG_NAME}/repos").json()
+    # repos = []
+    # for repo in gh_request("GET", f"/orgs/{GH_ORG_NAME}/repos").json():
+    #     repos.append(f"{repo['owner']}/{repo['name']}")
+    # return repos
+    return gh_request("GET", f"/orgs/{GH_ORG_NAME}/repos").json()
 
 @app.route("/oven", methods=["POST"])
 def oven():
