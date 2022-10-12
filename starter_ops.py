@@ -89,7 +89,7 @@ def test():
     repos = []
     for repo in gh_request("GET", f"/orgs/{GH_ORG_NAME}/repos").json():
         repos.append(repo["full_name"])
-    return dumps(repos)
+    return make_response(jsonify(repos), 200)
 
 @app.route("/oven", methods=["POST"])
 def oven():
