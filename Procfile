@@ -1,1 +1,1 @@
-web: hypercorn --bind 0.0.0.0:$PORT starter_ops:asgi_app
+web: gunicorn --bind 0.0.0.0:$PORT starter_ops:app
