@@ -230,7 +230,7 @@ In the first case, the application should commit a `README.md` to the repository
 
 In the second case, all of the same events should happen with the exception of the committal of a `README.md` file, as one will already be present along with a default branch.
 
-### Existing repositories
+### Existing Repositories
 
 For repositories that already exist under the organization which the same branch protections should be applied, the microservice exposes another endpoint, `/toaster`
 
