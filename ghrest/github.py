@@ -26,6 +26,7 @@ def debug_call(res):
     }
 
 def get(resource, auth: tuple):
+    """GitHub REST API HTTP GET interface"""
     full_url = f"{GH_REST_URL}{resource}"
     try:
         res = requests.get(full_url, headers=GH_HEADERS, auth=auth, timeout=10)
@@ -37,6 +38,7 @@ def get(resource, auth: tuple):
     return res
 
 def post(resource, payload, auth: tuple):
+    """GitHub REST API HTTP POST interface"""
     full_url = f"{GH_REST_URL}{resource}"
     try:
         res = requests.post(full_url, headers=GH_HEADERS, data=payload, auth=auth, timeout=10)
@@ -48,6 +50,7 @@ def post(resource, payload, auth: tuple):
     return res
 
 def put(resource, payload, auth: tuple):
+    """GitHub REST API HTTP PUT interface"""
     full_url = f"{GH_REST_URL}{resource}"
     try:
         res = requests.put(full_url, headers=GH_HEADERS, data=payload, auth=auth, timeout=10)
