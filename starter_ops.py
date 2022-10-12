@@ -89,7 +89,7 @@ def test():
     repos = []
     for repo in gh_request("GET", f"/orgs/{GH_ORG_NAME}/repos").json():
         repos.append(f"{repo['owner']}/{repo['name']}")
-    return dumps(repos)
+    return repos
     # return gh_request("GET", f"/orgs/{GH_ORG_NAME}/repos").json()
 
 @app.route("/oven", methods=["POST"])
