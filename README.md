@@ -163,14 +163,20 @@ In the GitHub web UI, navigate to the **Settings** tab of the organization. Once
 	- _Scroll down, place a tick next to `Repositories`_
 - Finally, save/create the webhook
 
+![webhook-1](images/webhook-1.png)
+![webhook-2](images/webhook-1.png)
+![webhook-3](images/webhook-3.png)
+
 While in the GitHub web UI, create the Personal Access Token. Navigate to the **Developer settings** area of **Profile Settings**. From there, **Personal access tokens** on the left. [Here](https://github.com/settings/tokens) is a direct link.
 
 Create a new token with the following settings:
 
-- **Name**: _any_
+- **Note**: _any_
 - **Expiration**: _at least 30 days, subject to user discretion_
 - **Select scopes**: _tick the box next to `repo` which will also select all of the sub-categories under `repo`_
 - Create and save the PAT. Make sure to copy down the token value as it needs to be set in the Heroku app environment.
+
+![pat-1](images/pat-1.png)
 
 Back in the terminal session, use the Heroku CLI to set the necessary environment variables that the application uses:
 
