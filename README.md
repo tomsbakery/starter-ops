@@ -227,7 +227,7 @@ Everything looks good so far.
 
 ## Usage
 
-It's not as easy to test the `/oven` endpoint, which is the one listening for the webhook configured earlier. To confirm that that is working as expected, do two things in the GitHub web UI:
+It's not as easy to test the `/oven` endpoint, which is the one listening for the webhook configured earlier. To confirm that this primary functionality of the application is working as expected, do two things in the GitHub web UI:
 
 1. Create a new empty public repository within the organization
 2. Create a new public repository within the organization with the option to include a default `README.md` file selected
@@ -236,6 +236,7 @@ In the first case, the application should commit a `README.md` to the repository
 
 In the second case, all of the same events should happen with the exception of the committal of a `README.md` file, as one will already be present along with a default branch.
 
+These operations constitute the main usage of the application.
 ### Existing Repositories
 
 For repositories that already exist under the organization which the same branch protections should be applied, the microservice exposes another endpoint, `/toaster`
@@ -249,6 +250,22 @@ ole
 ```
 
 The portion of the URL path following `toaster/` specifies the owner and repository name to work against i.e. `tomsbakery/supreme-guacamole`. This endpoint could be scripted against in a one-off fashion in order to apply the desired branch protection rules to repositories which already exist. The `/test` endpoint, which lists all repositories under the configured organization, might also aid in the development of such a script.
+
+An example could look something like the following:
+
+```shell
+#!/usr/bin/env bash
+
+toaster="https://calm-taiga-20140.herokuapp.com/toaster"
+repos=("tomsbakery/demo1" "tomsbakery/demo2" "tomsbakery/demo3")
+
+for repo in "${repos[@]}"; do
+    curl -s "$toaster/repo"
+    sleep 0.25
+done
+```
+
+Where the `repos` array variable would have been constructed manually using the output of the `/test` endpoint, which lists all repositories in the organization. For hundreds or more, the script could be modified to take this input from a file rather than specified in the script itself, or even piped directly from the output of a `GET` request to the `/test` endpoint.
 
 ## Reference
 
