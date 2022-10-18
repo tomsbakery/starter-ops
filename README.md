@@ -244,8 +244,7 @@ For repositories that already exist under the organization which the same branch
 This endpoint will apply the same actions described previously to a **single** repository, the owner and repository name being specified as URL parameters in a `GET` request to the endpoint. For example:
 
 ```shell
-➜ curl https://calm-taiga-20140.herokuapp.com/toaster/tomsbakery/supreme-guacam
-ole
+➜ curl https://calm-taiga-20140.herokuapp.com/toaster/tomsbakery/supreme-guacamole
 {"code":"success","status":201}
 ```
 
